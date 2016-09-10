@@ -39,7 +39,7 @@ for source in sources:
         zones.retrieve(source, bhcache)
 
     # Grab the content of the downloaded/cached file
-    # add to the urls list, due to the nature of this, that will
+    # add to the urls set, due to the nature of this, that will
     # automatically dedup
 
     with open(bhcache) as f:
