@@ -51,9 +51,14 @@ for source in sources:
             if re.match("^127.0.0.1\s\s", line):
                 line = re.sub('127.0.0.1  ', '', line)
             if re.match("^localhost", line):
-                continue;
-            if re.match("^[^\#]+", line):
-                urls.add(str.lower(line))
+                continue
+            if re.match("^\#+", line):
+                continue
+            if len(line) is 0:
+                continue
+
+            urls.add(str.lower(line.strip()))
+
 
 allcount = len(urls)
 
