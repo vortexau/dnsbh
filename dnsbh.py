@@ -14,7 +14,10 @@ bhdest = "/var/cache/dnsbh/"
 
 total = 0;
 urls = set()
+# Some sourced from https://intel.criticalstack.com/feeds
+# Others from Adblock Pro and uBlock Origin Chrome plugins
 sources = [
+    "https://hosts-file.net/download/hosts.txt",
     "https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt",
     "http://www.malwaredomainlist.com/hostslist/hosts.txt",
     "http://malwaredomains.lehigh.edu/files/immortal_domains.txt",
@@ -39,8 +42,6 @@ for source in sources:
         zones.retrieve(source, bhcache)
 
     # Grab the content of the downloaded/cached file
-    # add to the urls set, due to the nature of this, that will
-    # automatically dedup
 
     with open(bhcache) as f:
         lines = f.read().splitlines()
@@ -55,10 +56,9 @@ for source in sources:
             if re.match("^\#+", line):
                 continue
             if len(line) is 0:
-                continue
+                continue 
 
             urls.add(str.lower(line.strip()))
-
 
 allcount = len(urls)
 
@@ -69,7 +69,7 @@ zones = set()
 for url in urls:
     rec = "zone \"" + url + "\" {type master; file \"" + bindhosts + "\";}; \n"
     zones.add(rec)
-    
+
 print "Writing zonefile";
 with open(bindzones, 'w+') as f:
     for zone in zones:
