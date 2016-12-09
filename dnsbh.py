@@ -5,6 +5,7 @@ import urllib
 import re
 import os.path
 from datetime import date
+import time
 
 d = date.today()
 
@@ -12,12 +13,15 @@ bindzones = "/etc/bind/blockeddns.zones"
 bindhosts = "/etc/bind/blockeddns.hosts"
 bhdest = "/var/cache/dnsbh/"
 
+print "Execution started " + time.strftime("%c")
+
 total = 0;
 urls = set()
 # Some sourced from https://intel.criticalstack.com/feeds
 # Others from Adblock Pro and uBlock Origin Chrome plugins
+# "https://hosts-file.net/download/hosts.txt" has a HUGE list, breaks local bind on RasPi.
 sources = [
-    "https://hosts-file.net/download/hosts.txt",
+    "https://ransomwaretracker.abuse.ch/downloads/RW_DOMBL.txt",
     "https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt",
     "http://www.malwaredomainlist.com/hostslist/hosts.txt",
     "http://malwaredomains.lehigh.edu/files/immortal_domains.txt",
@@ -49,8 +53,8 @@ for source in sources:
         total = total + count
         print "Found " + str(count) + " domains. Adding..."
         for line in lines:
-            if re.match("^127.0.0.1\s\s", line):
-                line = re.sub('127.0.0.1  ', '', line)
+            if re.match("^127.0.0.1\s+", line):
+                line = re.sub('127.0.0.1\s+', '', line)
             if re.match("^localhost", line):
                 continue
             if re.match("^\#+", line):
@@ -82,3 +86,5 @@ print "Domains: " + str(allcount) + " total"
 print "All " + str(total) + " "
 print "Dupes " + str(total - allcount) + " total"
 print "Zone File entries: " + str(len(zones)) + " total"
+print "Execution completed " + time.strftime("%c")
+
