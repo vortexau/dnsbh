@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2.7
 
 import hashlib
 import urllib
@@ -14,6 +14,8 @@ bindhosts = "/etc/bind/blockeddns.hosts"
 bhdest = "/var/cache/dnsbh/"
 
 print "Execution started " + time.strftime("%c")
+
+os.mkdir(bhdest)
 
 total = 0;
 urls = set()
@@ -43,6 +45,7 @@ for source in sources:
     else:
         zones = urllib.URLopener()
         print "Retrieving " + source + ", saving to " + bhcache
+
         zones.retrieve(source, bhcache)
 
     # Grab the content of the downloaded/cached file
