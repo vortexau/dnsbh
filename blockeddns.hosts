@@ -1,0 +1,15 @@
+; This zone will redirect all requests back to the blackhole itself.
+
+$TTL    86400   ; one day
+
+@       IN      SOA     bhdns.vortex.id.au. bhdns.vortex.id.au. (
+                          1
+                          28800   ; refresh  8 hours
+                          7200    ; retry    2 hours
+                          864000  ; expire  10 days
+                          86400 ) ; min ttl  1 day
+                  NS      bhdns.vortex.id.au.
+
+                  A       192.168.1.2
+
+*               IN      A      192.168.1.2 
